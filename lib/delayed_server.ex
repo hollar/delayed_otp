@@ -67,8 +67,10 @@ defmodule DelayedServer do
     {:noreply, delayed_death(reason, state)}
   end
 
-  def handle_info({:die, reason, lifetime}, state),
-    do: {:stop, %DelayedDeath{lifetime: lifetime, reason: reason}, state}
+  def handle_info({:die, reason, lifetime}, state) do
+    message = "Delayed Server exited with error #{inspect reason} and lifetime #{lifetime}"
+    {:stop, %DelayedDeath{lifetime: lifetime, reason: reason, message: message}, state}
+  end
 
   def handle_info(msg, state) do
     send(state.pid, msg)

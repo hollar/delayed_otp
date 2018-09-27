@@ -35,7 +35,7 @@ defmodule DelayedSup do
   defp erl_supname(sup) when is_atom(sup), do: {:local, sup}
   defp erl_supname(sup), do: sup
 
-  def handle_info({:EXIT, pid, {:delayed_death, lifetime, reason}}, state) do
+  def handle_info({:EXIT, pid, %DelayedDeath{lifetime: lifetime, reason: reason}}, state) do
     {:reply, children, _} = :supervisor.handle_call(:which_children, nil, state)
 
     if id =
